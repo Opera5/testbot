@@ -1,0 +1,9 @@
+/home/murti/ros2ws/src/testbot/build/testbot/CMakeFiles/uninstall.dir
+/home/murti/ros2ws/src/testbot/build/testbot/CMakeFiles/testbot_uninstall.dir
+/home/murti/ros2ws/src/testbot/build/testbot/CMakeFiles/test.dir
+/home/murti/ros2ws/src/testbot/build/testbot/CMakeFiles/edit_cache.dir
+/home/murti/ros2ws/src/testbot/build/testbot/CMakeFiles/rebuild_cache.dir
+/home/murti/ros2ws/src/testbot/build/testbot/CMakeFiles/list_install_components.dir
+/home/murti/ros2ws/src/testbot/build/testbot/CMakeFiles/install.dir
+/home/murti/ros2ws/src/testbot/build/testbot/CMakeFiles/install/local.dir
+/home/murti/ros2ws/src/testbot/build/testbot/CMakeFiles/install/strip.dir

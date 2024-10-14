@@ -1,0 +1,28 @@
+[0.012s] Invoking command in '/home/murti/ros2ws/src/testbot/build/testbot': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/murti/ros2ws/src/install/my_rc:/home/murti/ros2ws/src/install/first_pkg:/home/murti/ros2ws/install/my_rc:/opt/ros/humble /usr/bin/cmake --build /home/murti/ros2ws/src/testbot/build/testbot -- -j20 -l20
+[0.050s] Invoked command in '/home/murti/ros2ws/src/testbot/build/testbot' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/murti/ros2ws/src/install/my_rc:/home/murti/ros2ws/src/install/first_pkg:/home/murti/ros2ws/install/my_rc:/opt/ros/humble /usr/bin/cmake --build /home/murti/ros2ws/src/testbot/build/testbot -- -j20 -l20
+[0.079s] Invoking command in '/home/murti/ros2ws/src/testbot/build/testbot': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/murti/ros2ws/src/install/my_rc:/home/murti/ros2ws/src/install/first_pkg:/home/murti/ros2ws/install/my_rc:/opt/ros/humble /usr/bin/cmake --install /home/murti/ros2ws/src/testbot/build/testbot
+[0.085s] -- Install configuration: ""
+[0.085s] -- Execute custom install script
+[0.086s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/config/empty.yaml
+[0.086s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/config/rcbot.rviz
+[0.086s] -- Symlinking: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/obslete_error.xacro
+[0.096s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/robot.urdf.xacro
+[0.096s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/testbot.xacro
+[0.096s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/launch/rsp.launch.py
+[0.096s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/worlds/empty.world
+[0.096s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/ament_index/resource_index/package_run_dependencies/testbot
+[0.097s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/ament_index/resource_index/parent_prefix_path/testbot
+[0.097s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/environment/ament_prefix_path.sh
+[0.097s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/environment/ament_prefix_path.dsv
+[0.097s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/environment/path.sh
+[0.097s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/environment/path.dsv
+[0.097s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/local_setup.bash
+[0.098s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/local_setup.sh
+[0.098s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/local_setup.zsh
+[0.098s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/local_setup.dsv
+[0.098s] -- Symlinking: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/package.dsv
+[0.107s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/ament_index/resource_index/packages/testbot
+[0.107s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/cmake/testbotConfig.cmake
+[0.107s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/cmake/testbotConfig-version.cmake
+[0.107s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/package.xml
+[0.109s] Invoked command in '/home/murti/ros2ws/src/testbot/build/testbot' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/murti/ros2ws/src/install/my_rc:/home/murti/ros2ws/src/install/first_pkg:/home/murti/ros2ws/install/my_rc:/opt/ros/humble /usr/bin/cmake --install /home/murti/ros2ws/src/testbot/build/testbot

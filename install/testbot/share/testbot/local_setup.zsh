@@ -1,0 +1,1 @@
+/home/murti/ros2ws/src/testbot/build/testbot/ament_cmake_environment_hooks/local_setup.zsh
