@@ -149,6 +149,59 @@ def generate_launch_description():
         output="screen",
     )
 
+    load_joint_state_controller = ExecuteProcess(
+        name="activate_joint_state_broadcaster",
+        cmd=[
+            "ros2",
+            "control",
+            "load_controller",
+            "--set-state",
+            "active",
+            "joint_state_broadcaster",
+        ],
+        shell=False,
+        output="screen",
+    )
+
+    load_joint_trajectory_controller = ExecuteProcess(
+        name="activate_diff_drive_base_controller",
+        cmd=[
+            "ros2",
+            "control",
+            "load_controller",
+            "--set-state",
+            "active",
+            "diff_drive_base_controller",
+        ],
+        shell=False,
+        output="screen",
+    )
+
+    relay_odom = Node(
+        name="relay_odom",
+        package="topic_tools",
+        executable="relay",
+        parameters=[
+            {
+                "input_topic": "/diff_drive_base_controller/odom",
+                "output_topic": "/odom",
+            }
+        ],
+        output="screen",
+    )
+
+    relay_cmd_vel = Node(
+        name="relay_cmd_vel",
+        package="topic_tools",
+        executable="relay",
+        parameters=[
+            {
+                "input_topic": "/cmd_vel",
+                "output_topic": "/diff_drive_base_controller/cmd_vel_unstamped",
+            }
+        ],
+        output="screen",
+    )
 
     # Launch!
     return LaunchDescription([
@@ -205,6 +258,9 @@ def generate_launch_description():
                     on_exit=[load_joint_trajectory_controller],
                 )
             ),
+            robot_state_pub,
+            relay_odom,
+            relay_cmd_vel
+        ]
+    )
 
-            robot_state_pub
-    ])
