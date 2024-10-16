@@ -36,7 +36,7 @@ def generate_launch_description():
 
     # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory('testbot'))
-    xacro_file = os.path.join(pkg_path,'description','robot.urdf.xacro')
+    xacro_file = os.path.join(pkg_path,'description','testbot.xacro')
     robot_description_config = xacro.process_file(xacro_file)
     world_path = os.path.join(pkg_path, "worlds/empty.world")
     gz_models_path = os.path.join(pkg_path, "models")
@@ -105,6 +105,18 @@ def generate_launch_description():
         ],
         parameters=[{"use_sim_time": use_sim_time}],
     )
+
+    # Define the joint_state_publisher node
+    joint_state_publisher_node = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        output='screen',
+        parameters=[{
+            'use_sim_time': True  # Set to true if using Gazebo or simulation time
+        }]
+    )
+
 
     load_joint_state_controller = ExecuteProcess(
         name="activate_joint_state_broadcaster",
@@ -260,7 +272,8 @@ def generate_launch_description():
             ),
             robot_state_pub,
             relay_odom,
-            relay_cmd_vel
+            relay_cmd_vel,
+            joint_state_publisher_node,
         ]
     )
 
