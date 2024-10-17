@@ -137,11 +137,11 @@
             <cylinder radius="0.1" length="0.05"/>
         </geometry>
         <origin xyz="0.0 0.0 0.0" rpy="1.57 0.0 0.0"/>
-    </collision>
+    </collision> 
     <inertial>
-        <mass value="1.0"/>
-        <origin xyz="0 0 0"/>
-        <inertia ixx="0.001458" iyy="0.001458" izz="0.00125" ixy="0.0" ixz="0.0" iyz="0.0"/>
+            <mass value="1.0"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.001458" iyy="0.001458" izz="0.00125" ixy="0.0" ixz="0.0" iyz="0.0"/>
     </inertial>
 </link> 
 

@@ -51,6 +51,7 @@ def generate_launch_description():
     
     # Create a robot_state_publisher node
     params = {'robot_description': robot_description_config.toxml(), 'use_sim_time': use_sim_time}
+
     robot_state_pub = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -118,34 +119,6 @@ def generate_launch_description():
     )
 
 
-    load_joint_state_controller = ExecuteProcess(
-        name="activate_joint_state_broadcaster",
-        cmd=[
-            "ros2",
-            "control",
-            "load_controller",
-            "--set-state",
-            "active",
-            "joint_state_broadcaster",
-        ],
-        shell=False,
-        output="screen",
-    )
-
-    load_joint_trajectory_controller = ExecuteProcess(
-        name="activate_diff_drive_base_controller",
-        cmd=[
-            "ros2",
-            "control",
-            "load_controller",
-            "--set-state",
-            "active",
-            "diff_drive_base_controller",
-        ],
-        shell=False,
-        output="screen",
-    )
-
     bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
@@ -160,7 +133,7 @@ def generate_launch_description():
         ],
         output="screen",
     )
-
+    
     load_joint_state_controller = ExecuteProcess(
         name="activate_joint_state_broadcaster",
         cmd=[
