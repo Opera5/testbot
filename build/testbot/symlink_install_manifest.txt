@@ -1,9 +1,11 @@
+/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/config/2w_diff_drive_controller_velocity.yaml
+/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/config/4w_diff_drive_controller_velocity.yaml
 /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/config/empty.yaml
-/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/config/rcbot.rviz
-/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/obslete_error.xacro
+/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/2w_testbot.xacro
+/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/4w_testbot.xacro
 /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/robot.urdf.xacro
-/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/testbot.xacro
-/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/launch/rsp.launch.py
+/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/launch/2w_rsp.launch.py
+/home/murti/ros2ws/src/testbot/install/testbot/share/testbot/launch/4w_rsp.launch.py
 /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/worlds/empty.world
 /home/murti/ros2ws/src/testbot/install/testbot/share/ament_index/resource_index/package_run_dependencies/testbot
 /home/murti/ros2ws/src/testbot/install/testbot/share/ament_index/resource_index/parent_prefix_path/testbot

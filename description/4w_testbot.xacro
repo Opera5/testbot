@@ -66,14 +66,14 @@
 <link name = "lidar">
     <visual>
             <geometry>
-                <cylinder radius="0.1" length="0.05"/>
+                <cylinder radius="0.0808" length="0.055"/>
             </geometry>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <material name="black"/>
     </visual>   
     <collision>
         <geometry>
-            <cylinder radius="0.1" length="0.05"/>
+            <cylinder radius="0.0808" length="0.055"/>
         </geometry>
     </collision> 
     <inertial>
@@ -84,20 +84,23 @@
 </link>   
 
 <joint name="base_lidar" type="fixed">
-    <origin xyz="0.0 0.0 0.225" rpy="0.0 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 0.0"/>
     <parent link="base_link"/>
     <child link="lidar"/>
     <axis xyz="0.0 0.0 0.0"/>
     <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
 </joint>
 
-<!--Left Wheel properties-->
-<link name = "left_wheel">
+
+<!--Wheel properties-->
+<xacro:macro name="wheel" params="name xyz rpy jrpy">
+
+<link name = "${name}">
     <visual>
             <geometry>
                 <cylinder radius="0.1" length="0.05"/>
             </geometry>
-            <origin xyz="0.0 0.0 0.0" rpy="1.57 0.0 0.0"/>
+            <origin xyz="0.0 0.0 0.0" rpy="${rpy}"/>
             <material name="blue"/>
     </visual>  
 
@@ -105,7 +108,7 @@
         <geometry>
             <cylinder radius="0.1" length="0.05"/>
         </geometry>
-        <origin xyz="0.0 0.0 0.0" rpy="1.57 0.0 0.0"/>
+        <origin xyz="0.0 0.0 0.0" rpy="${rpy}"/>
     </collision> 
     <inertial>
             <mass value="1.0"/>
@@ -114,75 +117,25 @@
     </inertial>
 </link> 
 
-<joint name="base_left_wheel" type="continuous">
-    <origin xyz="-0.15 0.233 0.0" rpy="0.0 0.0 0.0"/>
+<joint name="${name}_joint" type="continuous">
+    <origin xyz="${xyz}" rpy="0 0 0"/>
     <parent link="base_link"/>
-    <child link="left_wheel"/>
+    <child link="${name}"/>
     <axis xyz="0.0 1.0 0.0"/>
     <dynamics damping="0.2"/>
 </joint>
+</xacro:macro>
 
-<!--Right Wheel properties-->
-<link name = "right_wheel">
-    <visual>
-            <geometry>
-                <cylinder radius="0.1" length="0.05"/>
-            </geometry>
-            <origin xyz="0.0 0.0 0.0" rpy="1.570 0.0 0.0"/>
-            <material name="blue"/>
-    </visual>  
+<!--definition of all four wheels-->
+<xacro:wheel name="rr_wheel" xyz="-0.18 -0.233 0.0" rpy="1.57 0 0" jrpy="3.142 0.0 0.0"/> <!--Rear right wheel-->
+<xacro:wheel name="fr_wheel" xyz="0.18 -0.233 0.0" rpy="1.57 0 0" jrpy="3.142 0.0 0.0"/><!--front right wheel-->
+<xacro:wheel name="fl_wheel" xyz="0.18 0.233 0.0" rpy="1.57 0 0" jrpy="0.0 0.0 0.0"/><!--front left wheel-->
+<xacro:wheel name="rl_wheel" xyz="-0.18 0.233 0.0" rpy="1.57 0 0" jrpy="0.0 0.0 0.0"/><!--rear leftwheel-->
+  
 
-    <collision>
-        <geometry>
-            <cylinder radius="0.1" length="0.05"/>
-        </geometry>
-        <origin xyz="0.0 0.0 0.0" rpy="1.57 0.0 0.0"/>
-    </collision> 
-    <inertial>
-            <mass value="1.0"/>
-            <origin xyz="0 0 0"/>
-            <inertia ixx="0.001458" iyy="0.001458" izz="0.00125" ixy="0.0" ixz="0.0" iyz="0.0"/>
-    </inertial>
-</link> 
 
-<joint name="base_right_wheel" type="continuous">
-    <origin xyz="-0.15 -0.233 0.0" rpy="0.0 0.0 0.0"/>
-    <parent link="base_link"/>
-    <child link="right_wheel"/>
-    <axis xyz="0.0 1.0 0.0"/>
-    <dynamics damping="0.2"/>
-</joint>
 
-<!--Caster Wheel properties-->
-<link name = "caster_wheel">
-<visual>
-        <geometry>
-            <sphere radius="0.05"/>
-        </geometry>
-        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-        <material name="white"/>
-</visual>
-<collision>
-        <geometry>
-            <sphere radius="0.05"/>
-        </geometry>
-</collision>   
-<inertial>
-    <origin xyz="0 0 0" rpy="0 0 0"/> <!-- Assume the center of mass is at the origin -->
-    <mass value="1.0"/>
-    <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
-  </inertial> 
-</link> 
 
-<joint name="base_caster" type="fixed">
-    <origin xyz="0.2 0.0 -0.04" rpy="0.0 0.0 0.0"/>
-    <parent link="base_link"/>
-    <child link="caster_wheel"/>
-    <axis xyz="0.0 0.0 0.0"/>
-    <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
-    <dynamics damping="1.0" friction="1.0"/>
-    
-</joint>
 
 <!---IMU properties-->
 <link name="imu_link">
@@ -213,7 +166,7 @@
     <hardware>
       <plugin>ign_ros2_control/IgnitionSystem</plugin>
     </hardware>
-    <joint name="base_right_wheel">
+    <joint name="fr_wheel_joint">
       <command_interface name="velocity">
         <param name="min">-1</param>
         <param name="max">1</param>
@@ -221,7 +174,23 @@
       <state_interface name="position"/>
       <state_interface name="velocity"/>
     </joint>
-    <joint name="base_left_wheel">
+    <joint name="rr_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fl_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="rl_wheel_joint">
       <command_interface name="velocity">
         <param name="min">-1</param>
         <param name="max">1</param>
@@ -234,7 +203,7 @@
 
   <gazebo>
     <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-      <parameters>$(find testbot)/config/diff_drive_controller_velocity.yaml</parameters>
+      <parameters>$(find testbot)/config/4w_diff_drive_controller_velocity.yaml</parameters>
     </plugin>
   </gazebo>
   <!--Camera properties-->

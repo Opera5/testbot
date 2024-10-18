@@ -1,0 +1,30 @@
+[0.006s] Invoking command in '/home/murti/ros2ws/src/testbot/build/testbot': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/murti/ros2ws/src/install/my_rc:/home/murti/ros2ws/src/install/first_pkg:/home/murti/ros2ws/install/my_rc:/opt/ros/humble /usr/bin/cmake --build /home/murti/ros2ws/src/testbot/build/testbot -- -j20 -l20
+[0.045s] Invoked command in '/home/murti/ros2ws/src/testbot/build/testbot' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/murti/ros2ws/src/install/my_rc:/home/murti/ros2ws/src/install/first_pkg:/home/murti/ros2ws/install/my_rc:/opt/ros/humble /usr/bin/cmake --build /home/murti/ros2ws/src/testbot/build/testbot -- -j20 -l20
+[0.099s] Invoking command in '/home/murti/ros2ws/src/testbot/build/testbot': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/murti/ros2ws/src/install/my_rc:/home/murti/ros2ws/src/install/first_pkg:/home/murti/ros2ws/install/my_rc:/opt/ros/humble /usr/bin/cmake --install /home/murti/ros2ws/src/testbot/build/testbot
+[0.114s] -- Install configuration: ""
+[0.115s] -- Execute custom install script
+[0.115s] -- Symlinking: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/config/2w_diff_drive_controller_velocity.yaml
+[0.133s] -- Symlinking: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/config/4w_diff_drive_controller_velocity.yaml
+[0.148s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/config/empty.yaml
+[0.148s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/2w_testbot.xacro
+[0.148s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/4w_testbot.xacro
+[0.148s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/description/robot.urdf.xacro
+[0.148s] -- Symlinking: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/launch/2w_rsp.launch.py
+[0.159s] -- Symlinking: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/launch/4w_rsp.launch.py
+[0.172s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/worlds/empty.world
+[0.173s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/ament_index/resource_index/package_run_dependencies/testbot
+[0.173s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/ament_index/resource_index/parent_prefix_path/testbot
+[0.173s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/environment/ament_prefix_path.sh
+[0.174s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/environment/ament_prefix_path.dsv
+[0.174s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/environment/path.sh
+[0.174s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/environment/path.dsv
+[0.174s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/local_setup.bash
+[0.174s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/local_setup.sh
+[0.175s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/local_setup.zsh
+[0.175s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/local_setup.dsv
+[0.175s] -- Symlinking: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/package.dsv
+[0.190s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/ament_index/resource_index/packages/testbot
+[0.190s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/cmake/testbotConfig.cmake
+[0.190s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/cmake/testbotConfig-version.cmake
+[0.190s] -- Up-to-date symlink: /home/murti/ros2ws/src/testbot/install/testbot/share/testbot/package.xml
+[0.193s] Invoked command in '/home/murti/ros2ws/src/testbot/build/testbot' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/murti/ros2ws/src/install/my_rc:/home/murti/ros2ws/src/install/first_pkg:/home/murti/ros2ws/install/my_rc:/opt/ros/humble /usr/bin/cmake --install /home/murti/ros2ws/src/testbot/build/testbot
