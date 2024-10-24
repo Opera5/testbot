@@ -63,12 +63,11 @@
 </joint>
 
 <!--Lidar properties-->
-<link name = "lidar">
+ <link name = "lidar_link">
     <visual>
             <geometry>
                 <cylinder radius="0.0808" length="0.055"/>
             </geometry>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <material name="black"/>
     </visual>   
     <collision>
@@ -78,7 +77,6 @@
     </collision> 
     <inertial>
             <mass value="1.0"/>
-            <origin xyz="0 0 0"/>
             <inertia ixx="0.001458" iyy="0.001458" izz="0.00125" ixy="0.0" ixz="0.0" iyz="0.0"/>
     </inertial>
 </link>   
@@ -86,12 +84,13 @@
 <joint name="base_lidar" type="fixed">
     <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 0.0"/>
     <parent link="base_link"/>
-    <child link="lidar"/>
+    <child link="lidar_link"/>
     <axis xyz="0.0 0.0 0.0"/>
     <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
 </joint>
 
-<gazebo reference="lidar">
+<gazebo reference="lidar_link">
+
     <sensor name="lidar" type="gpu_lidar">
       <ignition_frame_id>lidar_link</ignition_frame_id>
       <topic>scan</topic>
@@ -103,13 +102,13 @@
           <horizontal>
             <samples>360</samples>
             <resolution>1.000000</resolution>
-            <min_angle>0.000000</min_angle>
-            <max_angle>6.280000</max_angle>
+            <min_angle>-3.1400000</min_angle>
+            <max_angle>3.14</max_angle>
           </horizontal>
         </scan>
         <range>
-          <min>0.120000</min>
-          <max>3.5</max>
+          <min>0.3</min>
+          <max>12</max>
           <resolution>0.015000</resolution>
         </range>
         <noise>
@@ -118,6 +117,9 @@
           <stddev>0.01</stddev>
         </noise>
       </ray>
+       <plugin filename="VisualizeLidar" name="Visualize Lidar">
+
+      </plugin>
     </sensor>
   </gazebo>
 
