@@ -17,6 +17,7 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(ros_gz_bridge REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -35,7 +36,7 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY src launch rviz config worlds models include
+  DIRECTORY src launch rviz config worlds models include description
   DESTINATION share/${PROJECT_NAME}
 )
 

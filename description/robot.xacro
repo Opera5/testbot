@@ -1,0 +1,317 @@
+<?xml version="1.0"?>
+
+<robot name="differential_drive_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!---materials definitions-->
+<material name="green">
+    <color rgba="0.0 0.7 0.0 1.0"/>
+</material>
+
+<material name="blue">
+<color rgba="0.0 0.0 1.0 1.0"/>
+</material>
+
+<material name="red">
+    <color rgba="1.0 0.0 0.0 1.0"/>
+</material>
+
+<material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+</material>
+
+<material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+</material>
+
+<!-- Body Dimensions -->
+<xacro:property name="body_link_x_dim" value="1"/>
+<xacro:property name="body_link_y_dim" value="0.6"/>
+<xacro:property name="body_link_z_dim" value="0.3"/>
+
+<!-- Wheel Dimensions & Location -->
+<xacro:property name="wheel_link_radius" value="0.15"/>
+<xacro:property name="wheel_link_length" value="0.1"/>
+<xacro:property name="wheel_link_z_location" value="-0.1"/>
+
+<!-- Material Density -->
+<xacro:property name="body_density" value="2710.0"/>
+<xacro:property name="wheel_density" value="2710.0"/>
+
+<!-- Pi Constant -->
+<xacro:property name="pi_const" value="3.14159265"/>
+
+<!-- Robot Body Mass, Wheel Mass -->
+<xacro:property name="body_mass" value="${body_density*body_link_x_dim*body_link_y_dim*body_link_z_dim}"/>
+<xacro:property name="wheel_mass" value="${wheel_density*pi_const*wheel_link_radius*wheel_link_radius*wheel_link_length}"/>
+
+<!-- Moment of inertia of the Wheel -->
+<xacro:property name="Iz_wheel" value="${0.5*wheel_mass*wheel_link_radius*wheel_link_radius}"/>
+<xacro:property name="I_wheel" value="${(1.0/12.0)*wheel_mass*(3.0*wheel_link_radius*wheel_link_radius+wheel_link_length*wheel_link_length)}"/>
+
+<!-- This Macro defines the complete Inertial Section of the Wheel -->
+<xacro:macro name="inertia_wheel">
+   <inertial>
+    <orgin rpy="0 0 0" xyz="0 0 0"/>
+    <mass value="${wheel_mass}"/>
+    <inertia ixx="${I_wheel}" ixy="0.0" ixz="0.0" iyy="${I_wheel}" iyz="0.0" izz="${Iz_wheel}"/>
+   </inertial>
+</xacro:macro>
+
+<!-- Including Extra Gazebo options & Motion Control Driver 
+<xacro:include filename="robot.gazebo"/> -->
+
+<!-- Defining Links & Joints of Robot -->
+
+<!-- Dummy Link -->
+<link name="dummy">
+</link>
+<joint name="dummy_joint" type="fixed">
+   <parent link="dummy"/>
+   <child link="body_link"/>
+</joint>
+
+<!-- Body Link of the Robot -->
+<link name="body_link">
+   <visual>
+      <geometry>
+         <box size="${body_link_x_dim} ${body_link_y_dim} ${body_link_z_dim}" />
+      </geometry>
+      <orgin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="green"/>
+   </visual>
+   
+   <collision>
+      <geometry>
+         <box size="${body_link_x_dim} ${body_link_y_dim} ${body_link_z_dim}" />
+      </geometry>
+      <orgin rpy="0 0 0" xyz="0 0 0"/>
+   </collision>
+   
+   <inertial>
+      <orgin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="${body_mass}"/>
+      <inertia ixx="${(1/12)*body_mass*(body_link_y_dim*body_link_y_dim+body_link_z_dim*body_link_z_dim)}" ixy="0" ixz="0" iyy="${(1/12)*body_mass*(body_link_x_dim*body_link_x_dim+body_link_z_dim*body_link_z_dim)}" iyz="0" izz="${(1/12)*body_mass*(body_link_y_dim*body_link_y_dim+body_link_x_dim*body_link_x_dim)}" />
+   </inertial>
+</link>
+
+<!-- Back Right Wheel Link & it's Joint -->
+<joint name="wheel1_joint" type="continuous" >
+   <parent link="body_link"/>
+   <child link="wheel1_link"/>
+   <origin xyz="${-body_link_x_dim/2+1.2*wheel_link_radius} ${-body_link_y_dim/2-wheel_link_length/2} ${wheel_link_z_location}" rpy="0 0 0" />
+   <axis xyz="0 1 0"/>
+   <limit effort="1000" velocity="1000"/>
+   <dynamics damping="1.0" friction="1.0"/>
+</joint>
+
+<link name="wheel1_link">
+   <visual>
+     <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+     <geometry>
+        <cylinder length="${wheel_link_length}" radius="${wheel_link_radius}"/>
+     </geometry>
+     <material name="black"/>
+   </visual>
+   
+   <collision>
+     <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+     <geometry>
+        <cylinder length="${wheel_link_length}" radius="${wheel_link_radius}"/>
+     </geometry>
+   </collision>
+   
+   <xacro:inertia_wheel />
+</link>
+
+<!-- Back Left Wheel Link & it's Joint -->
+<joint name="wheel2_joint" type="continuous" >
+   <parent link="body_link"/>
+   <child link="wheel2_link"/>
+   <origin xyz="${-body_link_x_dim/2+1.2*wheel_link_radius} ${body_link_y_dim/2+wheel_link_length/2} ${wheel_link_z_location}" rpy="0 0 0" />
+   <axis xyz="0 1 0"/>
+   <limit effort="1000" velocity="1000"/>
+   <dynamics damping="1.0" friction="1.0"/>
+</joint>
+
+<link name="wheel2_link">
+   <visual>
+     <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+     <geometry>
+        <cylinder length="${wheel_link_length}" radius="${wheel_link_radius}"/>
+     </geometry>
+     <material name="black"/>
+   </visual>
+   
+   <collision>
+     <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+     <geometry>
+        <cylinder length="${wheel_link_length}" radius="${wheel_link_radius}"/>
+     </geometry>
+   </collision>
+   
+   <xacro:inertia_wheel />
+</link>
+
+<!-- Front Right Wheel Link & it's Joint -->
+<joint name="wheel3_joint" type="continuous" >
+   <parent link="body_link"/>
+   <child link="wheel3_link"/>
+   <origin xyz="${body_link_x_dim/2-1.2*wheel_link_radius} ${-body_link_y_dim/2-wheel_link_length/2} ${wheel_link_z_location}" rpy="0 0 0" />
+   <axis xyz="0 1 0"/>
+   <limit effort="1000" velocity="1000"/>
+   <dynamics damping="1.0" friction="1.0"/>
+</joint>
+
+<link name="wheel3_link">
+   <visual>
+     <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+     <geometry>
+        <cylinder length="${wheel_link_length}" radius="${wheel_link_radius}"/>
+     </geometry>
+     <material name="black"/>
+   </visual>
+   
+   <collision>
+     <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+     <geometry>
+        <cylinder length="${wheel_link_length}" radius="${wheel_link_radius}"/>
+     </geometry>
+   </collision>
+   
+   <xacro:inertia_wheel />
+</link>
+
+<!-- Front Left Wheel Link & it's Joint -->
+<joint name="wheel4_joint" type="continuous" >
+   <parent link="body_link"/>
+   <child link="wheel4_link"/>
+   <origin xyz="${body_link_x_dim/2-1.2*wheel_link_radius} ${body_link_y_dim/2+wheel_link_length/2} ${wheel_link_z_location}" rpy="0 0 0" />
+   <axis xyz="0 1 0"/>
+   <limit effort="1000" velocity="1000"/>
+   <dynamics damping="1.0" friction="1.0"/>
+</joint>
+
+<link name="wheel4_link">
+   <visual>
+     <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+     <geometry>
+        <cylinder length="${wheel_link_length}" radius="${wheel_link_radius}"/>
+     </geometry>
+     <material name="black"/>
+   </visual>
+   
+   <collision>
+     <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+     <geometry>
+        <cylinder length="${wheel_link_length}" radius="${wheel_link_radius}"/>
+     </geometry>
+   </collision>
+   
+   <xacro:inertia_wheel />
+</link>
+
+ <gazebo>
+    <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+      <parameters>$(find testbot)/config/test4w.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+  <!--Control ad gazebo control interface-->
+    <ros2_control name="IgnitionSystem" type="system">
+    <hardware>
+      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+    </hardware>
+    <joint name="wheel1_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="wheel2_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="wheel3_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="wheel4_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  
+<!--Lidar Joint and properties-->
+
+<link name="laser_frame">
+    <visual>
+        <geometry>
+            <cylinder radius="0.0808" length="0.055"/>
+        </geometry>
+        <material name="red"/>
+    </visual>
+    <collision>
+        <geometry>
+            <cylinder radius="0.0808" length="0.055"/>
+        </geometry>
+    </collision>
+    <inertial>
+            <mass value="1.0"/>
+            <inertia ixx="0.001458" iyy="0.001458" izz="0.00125" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
+</link>
+
+
+
+<joint name="laser_joint" type="fixed">
+        <parent link="body_link"/>
+        <child link="laser_frame"/>
+        <origin xyz="0.1 0 0.185" rpy="0 0 0"/>
+    </joint>
+<gazebo reference="laser_frame">
+
+    <sensor name="lidar" type="gpu_lidar">
+      <ignition_frame_id>laser_frame</ignition_frame_id>
+      <topic>lidar</topic>
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1.000000</resolution>
+            <min_angle>-3.1400000</min_angle>
+            <max_angle>3.14</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.3</min>
+          <max>12</max>
+          <resolution>0.015000</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+  
+    </sensor>
+  </gazebo>
+</robot>

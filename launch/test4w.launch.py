@@ -37,7 +37,7 @@ def generate_launch_description():
     # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory('testbot'))
     default_rviz_config_path = os.path.join(pkg_path, "rviz/tbot.rviz")
-    xacro_file = os.path.join(pkg_path,'description','4w_testbot.xacro')
+    xacro_file = os.path.join(pkg_path,'description','robot.xacro')
     robot_description_config = xacro.process_file(xacro_file)
     world_path = os.path.join(pkg_path, "worlds/empty.world")
     gz_models_path = os.path.join(pkg_path, "models")
