@@ -80,6 +80,7 @@
             <mass value="1.0"/>
             <inertia ixx="0.001458" iyy="0.001458" izz="0.00125" ixy="0.0" ixz="0.0" iyz="0.0"/>
     </inertial>
+    
 </link>  
 
 <joint name="base_lidar" type="fixed">
@@ -90,9 +91,9 @@
 
 <gazebo reference="lidar_link">
 
-    <sensor name="lidar" type="gpu_lidar">
+    <sensor name="sensor_ray" type="gpu_lidar">
       <ignition_frame_id>lidar_link</ignition_frame_id>
-      <topic>lidar</topic>
+      <topic>/scan</topic>
       <always_on>true</always_on>
       <visualize>true</visualize>
       <update_rate>10</update_rate>

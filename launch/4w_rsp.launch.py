@@ -100,7 +100,7 @@ def generate_launch_description():
     ]
 
     spawn_entity = Node(
-        package="ros_gz_sim",
+        package="ros_ign_gazebo",
         executable="create",
         output="screen",
         arguments=[
@@ -135,9 +135,9 @@ def generate_launch_description():
         package="ros_ign_bridge",
         executable="parameter_bridge",
         arguments=[
-           #"/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan",
-            "/lidar@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan",
-            "/imu@sensor_msgs/msg/Imu[ignition.msgs.IMU",
+           "/scan@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan",
+            #"/lidar@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan",
+            "/imu@sensor_msgs/msg/Imu@ignition.msgs.IMU",
             "/sky_cam@sensor_msgs/msg/Image@ignition.msgs.Image",
             "/robot_cam@sensor_msgs/msg/Image@ignition.msgs.Image",
             "/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo",
