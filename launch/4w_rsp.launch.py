@@ -39,7 +39,7 @@ def generate_launch_description():
     default_rviz_config_path = os.path.join(pkg_path, "rviz/tbot.rviz")
     xacro_file = os.path.join(pkg_path,'description','4w_testbot.xacro')
     robot_description_config = xacro.process_file(xacro_file)
-    world_path = os.path.join(pkg_path, "worlds/empty.world")
+    world_path = os.path.join(pkg_path, "worlds/husarion_world.sdf")
     gz_models_path = os.path.join(pkg_path, "models")
 
     use_sim_time = LaunchConfiguration("use_sim_time")
@@ -109,8 +109,10 @@ def generate_launch_description():
             "-topic",
             "robot_description",
             "-z",
-            "1.0",
+            "0.1",
             "-x",
+            "0.0",
+            "-y",
             "-2.0",
             "--ros-args",
             "--log-level",
@@ -254,7 +256,7 @@ def generate_launch_description():
             *gazebo,
             spawn_entity,
             bridge,
-            rviz_node,
+            #rviz_node,
             RegisterEventHandler(
                 event_handler=OnProcessExit(
                     target_action=spawn_entity,

@@ -1,18 +1,22 @@
 controller_manager:
   ros__parameters:
-    update_rate: 50  # Hz
+    update_rate: 100  # Hz
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
     diff_drive_base_controller:
       type: diff_drive_controller/DiffDriveController
+      
+    imu_broadcaster:
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster
 
 diff_drive_base_controller:
   ros__parameters:
+    #testbot wheel joints
     left_wheel_names: ["fl_wheel_joint", "rl_wheel_joint"]
     right_wheel_names: ["fr_wheel_joint", "rr_wheel_joint"]
-
+   
     wheel_separation: 0.4
     #wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
     wheel_radius: 0.1
@@ -23,17 +27,17 @@ diff_drive_base_controller:
 
     publish_rate: 50.0
     odom_frame_id: odom
-    base_frame_id: base_link
+    base_frame_id: base_footprint
     pose_covariance_diagonal : [0.001, 0.001, 0.0, 0.0, 0.0, 0.01]
     twist_covariance_diagonal: [0.001, 0.0, 0.0, 0.0, 0.0, 0.01]
 
-    open_loop: true 
+    open_loop: false 
     enable_odom_tf: true
 
     cmd_vel_timeout: 0.5
     #publish_limited_velocity: true
     use_stamped_vel: false
-    #velocity_rolling_window_size: 10
+    velocity_rolling_window_size: 1
 
     # Velocity and acceleration limits
     # Whenever a min_* is unspecified, default to -max_*

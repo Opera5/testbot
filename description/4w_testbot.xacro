@@ -26,19 +26,36 @@
 <!-- Define some commonly used intertial properties  -->
   <xacro:macro name="box_inertia" params="m w h d">
     <inertial>
-      <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
       <mass value="${m}"/>
       <inertia ixx="${(m/12) * (h*h + d*d)}" ixy="0.0" ixz="0.0" iyy="${(m/12) * (w*w + d*d)}" iyz="0.0" izz="${(m/12) * (w*w + h*h)}"/>
     </inertial>
   </xacro:macro>
 
+  <xacro:macro name="cylinder_inertia" params="m r h">
+      <!--<origin xyz="0 0 ${0.3/2.0}" rpy="0 0 0"/>-->
+      <mass value="${m}"/>
+      <inertia  ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+                  iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
+                  izz="${m*r*r/2}" /> 
+      </xacro:macro>
+
 
 <!--- All Robots links with their full properties-->
 
-<!--Base_link properties-->
-<link name="base_footprint"/>
+<!--body_link properties-->
 
-<link name="base_link">
+<link name="base_footprint"> </link>
+
+<link name="base_link"> </link>
+
+<joint name = "base_body_footprint_joint" type = "fixed">
+<parent link="base_link"/>
+<child link = "body_link"/>
+<origin xyz="0.0 0.0 0.1" rpy="0.0 0.0 0.0" />
+</joint>
+
+<link name="body_link">
     <visual>
         <geometry>
             <box size="0.6 0.4 0.2"/>
@@ -53,21 +70,20 @@
         </geometry>
         <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/> 
     </collision> 
-    <xacro:box_inertia m="1.0" w="0.4" d="0.6" h="0.2"/>
+    <xacro:box_inertia m="2.5" w="0.4" d="0.6" h="0.2"/>
 </link>
 
 <joint name="base_link_footprint_joint" type="fixed">
-    <origin xyz="0.0 0.0 -0.15" rpy="0.0 0.0 0.0"/>
-    <parent link="base_link"/>
-    <child link="base_footprint"/>   
-</joint>
+    <origin xyz="0.0 0.0 0" rpy="0.0 0.0 0.0"/>
+    <parent link="base_footprint"/> 
+    <child link="base_link"/> 
+</joint>  
 
 <!--Lidar properties-->
 <link name = "lidar_link">
     <visual>
             <geometry>
                 <cylinder radius="0.0808" length="0.055"/>
-
             </geometry>
             <material name="black"/>
     </visual>   
@@ -77,21 +93,27 @@
         </geometry>
     </collision> 
     <inertial>
+            <origin xyz="0 0 0.2" rpy="0 0 0"/>
             <mass value="1.0"/>
             <inertia ixx="0.001458" iyy="0.001458" izz="0.00125" ixy="0.0" ixz="0.0" iyz="0.0"/>
     </inertial>
     
-</link>  
+</link>   
 
 <joint name="base_lidar" type="fixed">
-    <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 0.0"/>
-    <parent link="base_link"/>
+    <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 ${2*pi}"/>
+    <parent link="body_link"/>
     <child link="lidar_link"/>
 </joint>
 
-<gazebo reference="lidar_link">
+ <gazebo reference='base_lidar'>
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
 
-    <sensor name="sensor_ray" type="gpu_lidar">
+<gazebo reference="lidar_link">
+    <sensor name="lidar" type="gpu_lidar">
+
+     <!-- <frame_id>lidar_link</frame_id>-->
       <ignition_frame_id>lidar_link</ignition_frame_id>
       <topic>/scan</topic>
       <always_on>true</always_on>
@@ -107,8 +129,8 @@
           </horizontal>
         </scan>
         <range>
-          <min>0.3</min>
-          <max>12</max>
+          <min>0.03</min>
+          <max>10</max>
           <resolution>0.015000</resolution>
         </range>
         <noise>
@@ -117,9 +139,9 @@
           <stddev>0.01</stddev>
         </noise>
       </ray>
-  
     </sensor>
   </gazebo>
+
 
 <!--Wheel properties-->
 <xacro:macro name="wheel" params="name xyz rpy jrpy">
@@ -148,7 +170,7 @@
 
 <joint name="${name}_joint" type="continuous">
     <origin xyz="${xyz}" rpy="0 0 0"/>
-    <parent link="base_link"/>
+    <parent link="body_link"/>
     <child link="${name}"/>
     <axis xyz="0.0 1.0 0.0"/>
     <dynamics damping="0.2"/>
@@ -156,9 +178,9 @@
 </xacro:macro>
 
 <!--definition of all four wheels-->
-<xacro:wheel name="rr_wheel" xyz="-0.18 -0.233 0.0" rpy="1.57 0 0" jrpy="3.142 0.0 0.0"/> <!--Rear right wheel-->
+<xacro:wheel name="rr_wheel" xyz="-0.18 -0.233 0.0" rpy="1.57 0 0" jrpy="0.0 0.0 0.0"/> <!--Rear right wheel-->
 <xacro:wheel name="fr_wheel" xyz="0.18 -0.233 0.0" rpy="1.57 0 0" jrpy="3.142 0.0 0.0"/><!--front right wheel-->
-<xacro:wheel name="fl_wheel" xyz="0.18 0.233 0.0" rpy="1.57 0 0" jrpy="0.0 0.0 0.0"/><!--front left wheel-->
+<xacro:wheel name="fl_wheel" xyz="0.18 0.233 0.0" rpy="1.57 0 0" jrpy="3.142 0.0 0.0"/><!--front left wheel-->
 <xacro:wheel name="rl_wheel" xyz="-0.18 0.233 0.0" rpy="1.57 0 0" jrpy="0.0 0.0 0.0"/><!--rear leftwheel-->
   
 
@@ -185,7 +207,7 @@
   </link>
 
    <joint name="imu_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="body_link"/>
     <child link="imu_link"/>
     <origin xyz="0 0 0.01"/>
   </joint>
@@ -249,7 +271,7 @@
             <noise type="gaussian">
               <mean>0.0</mean>
               <stddev>1.7e-2</stddev>
-              <bias_mean>0.1</bias_mean>
+              <bias_mean>0.1</bias_mean> 
               <bias_stddev>0.001</bias_stddev>
             </noise>
           </z>
@@ -330,7 +352,7 @@
   </link>
 
   <joint name="camera_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="body_link"/>
     <child link="camera_link"/>
     <origin xyz="0.309 0 0.1" rpy="0 0 0"/>
   </joint>
