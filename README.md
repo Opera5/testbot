@@ -73,6 +73,9 @@ Issue: 'Error entity lidar_link doesn't exist and cannot be used to set lidar vi
 > a. Corrected odom frame reference in TF tree, verified IMU data, and adjusted navigation parameters.
 
 > b. Reducing bot rotation speed in the Teleoperate function allows the bot to reset the scan position after being rotated.
+> checkout the created Map after issue resolved
+![Screenshot from 2025-02-28 16-47-36](https://github.com/user-attachments/assets/4e8abd2e-03ae-41ec-b404-2a82de2e6a18)
+
 
 #### Control Activation Errors
 
