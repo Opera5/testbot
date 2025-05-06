@@ -43,19 +43,19 @@
 
 <!--- All Robots links with their full properties-->
 
-<!--body_link properties-->
+<!--base_link properties-->
 
 <link name="base_footprint"> </link>
 
-<link name="base_link"> </link>
+<!--<link name="base_link"> </link>-->
 
 <joint name = "base_body_footprint_joint" type = "fixed">
-<parent link="base_link"/>
-<child link = "body_link"/>
+<parent link="base_footprint"/>
+<child link = "base_link"/>
 <origin xyz="0.0 0.0 0.1" rpy="0.0 0.0 0.0" />
 </joint>
 
-<link name="body_link">
+<link name="base_link">
     <visual>
         <geometry>
             <box size="0.6 0.4 0.2"/>
@@ -72,13 +72,13 @@
     </collision> 
     <xacro:box_inertia m="2.5" w="0.4" d="0.6" h="0.2"/>
 </link>
-
+<!--
 <joint name="base_link_footprint_joint" type="fixed">
     <origin xyz="0.0 0.0 0" rpy="0.0 0.0 0.0"/>
     <parent link="base_footprint"/> 
     <child link="base_link"/> 
 </joint>  
-
+-->
 <!--Lidar properties-->
 <link name = "lidar_link">
     <visual>
@@ -102,7 +102,7 @@
 
 <joint name="base_lidar" type="fixed">
     <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 ${2*pi}"/>
-    <parent link="body_link"/>
+    <parent link="base_link"/>
     <child link="lidar_link"/>
 </joint>
 
@@ -127,6 +127,14 @@
             <min_angle>-3.1400000</min_angle>
             <max_angle>3.14</max_angle>
           </horizontal>
+
+          <!--use the vertical tag for 3D velodyne simulation-->
+         <!-- <vertical>
+          <resolution>1</resolution>
+              <samples>32</samples>
+              <min_angle>-0.5353</min_angle>
+              <max_angle>0.1862</max_angle>
+          </vertical> -->
         </scan>
         <range>
           <min>0.03</min>
@@ -170,7 +178,7 @@
 
 <joint name="${name}_joint" type="continuous">
     <origin xyz="${xyz}" rpy="0 0 0"/>
-    <parent link="body_link"/>
+    <parent link="base_link"/>
     <child link="${name}"/>
     <axis xyz="0.0 1.0 0.0"/>
     <dynamics damping="0.2"/>
@@ -207,7 +215,7 @@
   </link>
 
    <joint name="imu_joint" type="fixed">
-    <parent link="body_link"/>
+    <parent link="base_link"/>
     <child link="imu_link"/>
     <origin xyz="0 0 0.01"/>
   </joint>
@@ -284,7 +292,7 @@
     <!--Control ad gazebo control interface-->
     <ros2_control name="IgnitionSystem" type="system">
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
     <joint name="fr_wheel_joint">
       <command_interface name="velocity">
@@ -322,7 +330,7 @@
 
 
   <gazebo>
-    <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
       <parameters>$(find testbot)/config/4w_diff_drive_controller_velocity.yaml</parameters>
     </plugin>
   </gazebo>
@@ -352,9 +360,10 @@
   </link>
 
   <joint name="camera_joint" type="fixed">
-    <parent link="body_link"/>
+    <parent link="base_link"/>
     <child link="camera_link"/>
     <origin xyz="0.309 0 0.1" rpy="0 0 0"/>
+    <axis xyz='0 1 0'/>
   </joint>
 
   <link name="camera_frame"/>
@@ -366,7 +375,7 @@
   </joint>
   
   <gazebo reference="camera_link">
-    <sensor name="robot_cam" type="camera">
+    <sensor name="camera" type="camera">
       <camera>
         <horizontal_fov>1.047</horizontal_fov>
         <image>
@@ -375,13 +384,24 @@
         </image>
         <clip>
           <near>0.1</near>
-          <far>100</far>
+          <far>20</far>
         </clip>
+
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+
+        <optical_frame_id>camera_frame</optical_frame_id>
+        <camera_info_topic>camera_info</camera_info_topic>
+        
       </camera>
+
       <always_on>1</always_on>
-      <update_rate>30</update_rate>
+      <update_rate>10</update_rate>
       <visualize>true</visualize>
-      <topic>robot_cam</topic>
+      <topic>/robot_cam</topic>
       <enable_metrics>true</enable_metrics>
     </sensor>
   </gazebo>

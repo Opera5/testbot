@@ -31,8 +31,7 @@ import os
 
 def generate_launch_description():
 
-    # Check if we're told to use sim time
-    use_sim_time = LaunchConfiguration('use_sim_time')
+
 
     # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory('testbot'))
@@ -40,9 +39,10 @@ def generate_launch_description():
     xacro_file = os.path.join(pkg_path,'description','4w_testbot.xacro')
     robot_description_config = xacro.process_file(xacro_file)
     world_path = os.path.join(pkg_path, "worlds/husarion_world.sdf")
+    ekf_path = os.path.join(pkg_path, "config/ekf.yaml")
     gz_models_path = os.path.join(pkg_path, "models")
 
-    use_sim_time = LaunchConfiguration("use_sim_time")
+    use_sim_time = LaunchConfiguration("use_sim_time")   # Check if we're told to use sim time
     use_localization = LaunchConfiguration("use_localization")
     use_rviz = LaunchConfiguration("use_rviz")
     log_level = LaunchConfiguration("log_level")
@@ -69,7 +69,13 @@ def generate_launch_description():
         arguments=["-d", LaunchConfiguration("rvizconfig")],
     )
 
-    
+    ekfloc_node = Node(
+        package="robot_localization",
+        executable="ekf_node",
+        name="ekf_filter_node",
+        output="screen",
+        parameters=[ekf_path, {'use_sim_time': use_sim_time}],
+    )
 
     # gazebo have to be executed with shell=False, or test_launch won't terminate it
     #   see: https://github.com/ros2/launch/issues/545
@@ -128,7 +134,7 @@ def generate_launch_description():
         name='joint_state_publisher',
         output='screen',
         parameters=[{
-            'use_sim_time': True  # Set to true if using Gazebo or simulation time
+            'use_sim_time': use_sim_time  # Set to true if using Gazebo or simulation time
         }]
     )
 
@@ -145,6 +151,7 @@ def generate_launch_description():
             "/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo",
             # Clock message is necessary for the diff_drive_controller to accept commands https://github.com/ros-controls/gz_ros2_control/issues/106
             "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
+            "/scan/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked",
         ],
         output="screen",
     )
@@ -202,7 +209,7 @@ def generate_launch_description():
         ],
         output="screen",
     )
-
+      
     # Launch!
     return LaunchDescription([
             SetEnvironmentVariable(
@@ -271,6 +278,7 @@ def generate_launch_description():
             ),
             robot_state_pub,
             relay_odom,
+            #ekfloc_node,
             relay_cmd_vel,
             joint_state_publisher_node,
         ]
