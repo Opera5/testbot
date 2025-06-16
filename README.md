@@ -1,6 +1,6 @@
 # Testbot updated V0
 
-Testbot is being developed as a ROS2-based (Humble Distribution) robotic system integrating navigation, control, and sensor fusion. It utilizes Gazebo Fortress for simulation and ros2_control for managing actuator control. The robot is designed for autonomous navigation, leveraging LIDAR, IMU, and odometry sensors for localization and path planning.
+Testbot is being developed as a ROS2-based (Humble Distribution) robotic system integrating navigation, control, and sensor fusion. It utilizes Gazebo Fortress with Husarion World model for simulation and ros2_control for managing actuator control. The robot is designed for autonomous navigation, leveraging LIDAR, IMU, and odometry sensors for localization and path planning.
 
 ## Key Components and Features
 
