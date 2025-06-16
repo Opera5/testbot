@@ -29,6 +29,13 @@ def generate_launch_description():
         description='Flag to enable use_sim_time'
     )
 
+    # Launch Gazebo with your robot
+    gazebolaunch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(testbotloc, 'launch', '4w_rsp.launch.py')
+            ),
+        launch_arguments={'use_sim_time': 'true'}.items(),
+        )
 
     # Path to the Slam Toolbox launch file
     slam_toolbox_launch_path = os.path.join(
@@ -69,6 +76,7 @@ def generate_launch_description():
     launchDescriptionObject.add_action(rviz_config_arg)
     launchDescriptionObject.add_action(sim_time_arg)
     launchDescriptionObject.add_action(rviz_node)
+    launchDescriptionObject.add_action(gazebolaunch)
     launchDescriptionObject.add_action(slam_toolbox_launch)
 
     return launchDescriptionObject

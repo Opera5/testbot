@@ -45,7 +45,7 @@ def generate_launch_description():
             executable='amcl',
             name='amcl',
             output='screen',
-            parameters=[os.path.join(nav2_bringup_dir, 'params', 'nav2_params.yaml'),
+            parameters=[os.path.join(testbot_dir, 'config', 'amcloc.yaml'),
                         {'use_sim_time': True}]
         ),
 

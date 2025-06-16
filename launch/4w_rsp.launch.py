@@ -77,6 +77,19 @@ def generate_launch_description():
         parameters=[ekf_path, {'use_sim_time': use_sim_time}],
     )
 
+    #Twist mux node
+    twistmux = Node(
+    package='twist_mux',
+    executable='twist_mux',
+    name='twist_mux',
+    output='screen',
+    parameters=[os.path.join(get_package_share_directory('testbot'), 'config', 'twistmux.yaml')],
+    remappings=[
+        ('cmd_vel_out', '/cmd_vel')  # Output to actual robot/cmd_vel topic
+    ]
+    )
+
+
     # gazebo have to be executed with shell=False, or test_launch won't terminate it
     #   see: https://github.com/ros2/launch/issues/545
     # This code is form taken ros_gz_sim and modified to work with shell=False
@@ -140,11 +153,11 @@ def generate_launch_description():
 
 
     bridge = Node(
-        package="ros_ign_bridge",
+        package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=[
-           "/scan@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan",
-            #"/lidar@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan",
+           #"/scan@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan",
+            "/scan@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan",
             "/imu@sensor_msgs/msg/Imu@ignition.msgs.IMU",
             "/sky_cam@sensor_msgs/msg/Image@ignition.msgs.Image",
             "/robot_cam@sensor_msgs/msg/Image@ignition.msgs.Image",
@@ -278,8 +291,9 @@ def generate_launch_description():
             ),
             robot_state_pub,
             relay_odom,
-            #ekfloc_node,
+            ekfloc_node,
             relay_cmd_vel,
+            #twistmux,
             joint_state_publisher_node,
         ]
     )

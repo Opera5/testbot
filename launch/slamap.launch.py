@@ -9,9 +9,9 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
 
-    testbotnav = get_package_share_directory('testbot')
+    testbotmap = get_package_share_directory('testbot')
 
-    gazebo_models_path, ignore_last_dir = os.path.split(testbotnav)
+    gazebo_models_path, ignore_last_dir = os.path.split(testbotmap)
     os.environ["GZ_SIM_RESOURCE_PATH"] += os.pathsep + gazebo_models_path
 
     rviz_launch_arg = DeclareLaunchArgument(
@@ -47,14 +47,20 @@ def generate_launch_description():
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
-        arguments=['-d', PathJoinSubstitution([testbotnav, 'rviz', LaunchConfiguration('rviz_config')])],
+        arguments=['-d', PathJoinSubstitution([testbotmap, 'rviz', LaunchConfiguration('rviz_config')])],
         condition=IfCondition(LaunchConfiguration('rviz')),
         parameters=[
             {'use_sim_time': LaunchConfiguration('use_sim_time')},
         ]
     )
 
-   
+   # Launch Gazebo with your robot
+    gazebolaunch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(testbotmap, 'launch', '4w_rsp.launch.py')
+            ),
+        launch_arguments={'use_sim_time': 'true'}.items(),
+        )
 
     slam_toolbox_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(slam_toolbox_launch_path),
@@ -70,7 +76,7 @@ def generate_launch_description():
     launchDescriptionObject.add_action(rviz_config_arg)
     launchDescriptionObject.add_action(sim_time_arg)
     launchDescriptionObject.add_action(rviz_node)
-    #launchDescriptionObject.add_action(interactive_marker_twist_server_node)
+    launchDescriptionObject.add_action(gazebolaunch)
     launchDescriptionObject.add_action(slam_toolbox_launch)
 
     return launchDescriptionObject

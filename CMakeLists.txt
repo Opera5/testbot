@@ -36,9 +36,20 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+if(POLICY CMP0009)
+  cmake_policy(SET CMP0009 NEW)
+endif()
+
+
 install(
   DIRECTORY src launch rviz config worlds models include description maps
   DESTINATION share/${PROJECT_NAME}
 )
 
 ament_package()
+
+
+# <---------------------MISSION IN THE LAB ------------------------------>
+#1. Xacro to URDF covert and compare
+#2. scaling buggy version for simulation
+#3. Workbench test on PC with Physical device

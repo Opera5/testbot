@@ -1,0 +1,501 @@
+<?xml version="1.0" ?>
+<!-- Modified URDF for rosbot_xl with corrected ros2_control for differential drive -->
+<robot name="rosbot_xl">
+  <!-- Define material colors -->
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+  <material name="white">
+    <color rgba="1 1 0.8 1"/>
+  </material>
+  <material name="red">
+    <color rgba="0.8 0 0 1"/>
+  </material>
+  <material name="green">
+    <color rgba="0 0.8 0 1"/>
+  </material>
+  <material name="gray">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <!-- Base link and body link definition -->
+  <link name="base_footprint"/>
+  <joint name="base_to_body_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.048"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
+  
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.1725 0.2011 0.0855"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1725 0.2011 0.0855"/>
+      </geometry>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </collision>
+    <inertial>
+      <mass value="3.5"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0358"/>
+      <inertia ixx="0.01393" ixy="-0.000020968097" ixz="0.000010399694" iyy="0.01081" iyz="0.000059372953" izz="0.02048"/>
+    </inertial>
+  </link>
+  
+  <link name="cover_link"/>
+  <joint name="body_to_cover_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.08345"/>
+    <parent link="base_link"/>
+    <child link="cover_link"/>
+  </joint>
+  
+  <link name="imu_link"/>
+  <joint name="body_to_imu_joint" type="fixed">
+    <origin rpy="3.14159 0.0 0.0" xyz="-0.1369 -0.0419 0.0370"/>
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+  </joint>
+  
+  <!-- IMU Gazebo Plugin -->
+  <gazebo reference="imu_link">
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100.0</update_rate>
+      <topic>imu/data</topic>
+      <ignition_frame_id>imu_link</ignition_frame_id>
+      <imu>
+        <noise>
+          <type>gaussian</type>
+          <rate>
+            <mean>0.0</mean>
+            <stddev>0.0002</stddev>
+          </rate>
+          <accel>
+            <mean>0.0</mean>
+            <stddev>0.002</stddev>
+          </accel>
+        </noise>
+      </imu>
+    </sensor>
+  </gazebo>
+  
+  <link name="fl_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.036" radius="0.048"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="1.5707963267948966 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.036" radius="0.048"/>
+      </geometry>
+      <origin rpy="1.5707963267948966 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </collision>
+    <inertial>
+      <mass value="0.051"/>
+      <inertia ixx="5.0587413e-05" ixy="0.0" ixz="0.0" iyy="8.5933192e-05" iyz="0.0" izz="5.0587829e-05"/>
+    </inertial>
+  </link>
+  <joint name="fl_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="fl_wheel_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.085 0.124 0.0"/>
+    <axis xyz="0.0 1.0 0.0"/>
+    <limit effort="1.5" velocity="30.0"/>
+    <dynamics damping="0.001" friction="0.001"/>
+  </joint>
+  
+  <link name="fr_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.036" radius="0.048"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="1.5707963267948966 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.036" radius="0.048"/>
+      </geometry>
+      <origin rpy="1.5707963267948966 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </collision>
+    <inertial>
+      <mass value="0.051"/>
+      <inertia ixx="5.0587413e-05" ixy="0.0" ixz="0.0" iyy="8.5933192e-05" iyz="0.0" izz="5.0587829e-05"/>
+    </inertial>
+  </link>
+  <joint name="fr_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="fr_wheel_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.085 -0.124 0.0"/>
+    <axis xyz="0.0 1.0 0.0"/>
+    <limit effort="1.5" velocity="30.0"/>
+    <dynamics damping="0.001" friction="0.001"/>
+  </joint>
+  
+  <link name="rl_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.036" radius="0.048"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="1.5707963267948966 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.036" radius="0.048"/>
+      </geometry>
+      <origin rpy="1.5707963267948966 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </collision>
+    <inertial>
+      <mass value="0.051"/>
+      <inertia ixx="5.0587413e-05" ixy="0.0" ixz="0.0" iyy="8.5933192e-05" iyz="0.0" izz="5.0587829e-05"/>
+    </inertial>
+  </link>
+  <joint name="rl_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rl_wheel_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.085 0.124 0.0"/>
+    <axis xyz="0.0 1.0 0.0"/>
+    <limit effort="1.5" velocity="30.0"/>
+    <dynamics damping="0.001" friction="0.001"/>
+  </joint>
+  
+  <link name="rr_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.036" radius="0.048"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="1.5707963267948966 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.036" radius="0.048"/>
+      </geometry>
+      <origin rpy="1.5707963267948966 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </collision>
+    <inertial>
+      <mass value="0.051"/>
+      <inertia ixx="5.0587413e-05" ixy="0.0" ixz="0.0" iyy="8.5933192e-05" iyz="0.0" izz="5.0587829e-05"/>
+    </inertial>
+  </link>
+  <joint name="rr_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rr_wheel_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.085 -0.124 0.0"/>
+    <axis xyz="0.0 1.0 0.0"/>
+    <limit effort="1.5" velocity="30.0"/>
+    <dynamics damping="0.001" friction="0.001"/>
+  </joint>
+  
+  <!-- ROS2 Control for Wheels -->
+  <ros2_control name="IgnitionSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    <joint name="fl_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-20</param>
+        <param name="max">20</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fr_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-20</param>
+        <param name="max">20</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="rl_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-20</param>
+        <param name="max">20</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="rr_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-20</param>
+        <param name="max">20</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find testbot)/config/4w_diff_drive_controller_velocity.yaml</parameters>
+    </plugin>
+  </gazebo>
+  
+  <joint name="body_to_antenna_connector_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="-0.155 -0.055 0.065"/>
+    <parent link="base_link"/>
+    <child link="antenna_connector_link"/>
+  </joint>
+  <link name="antenna_connector_link">
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="blue"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+  </link>
+  <joint name="antenna_connector_to_antenna_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="-0.013 0.0 0.008"/>
+    <parent link="antenna_connector_link"/>
+    <child link="antenna_link"/>
+  </joint>
+  <link name="antenna_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.0052"/>
+      </geometry>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.05"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.0052"/>
+      </geometry>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.05"/>
+    </collision>
+  </link>
+  
+  <!-- LIDAR -->
+  <joint name="cover_to_slamtec_rplidar_s1_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="0.02 0.0 0.0"/>
+    <parent link="cover_link"/>
+    <child link="slamtec_rplidar_s1_link"/>
+  </joint>
+  <link name="slamtec_rplidar_s1_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.051" radius="0.02775"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0255"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.0555 0.0555 0.0195"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.00975"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.051" radius="0.02775"/>
+      </geometry>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0255"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.0555 0.0555 0.0195"/>
+      </geometry>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.00975"/>
+    </collision>
+    <inertial>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.02775"/>
+      <mass value="0.105"/>
+      <inertia ixx="0.000049654" ixy="0.0" ixz="0.0" iyy="0.000049654" iyz="0.0" izz="0.000053884"/>
+    </inertial>
+  </link>
+  <joint name="slamtec_rplidar_s1_to_laser_joint" type="fixed">
+    <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0 0.04"/>
+    <parent link="slamtec_rplidar_s1_link"/>
+    <child link="laser"/>
+  </joint>
+  <link name="laser"/>
+  <gazebo reference="laser">
+    <sensor name="slamtec_rplidar_s1_sensor" type="gpu_lidar">
+      <topic>scan</topic>
+      <ignition_frame_id>laser</ignition_frame_id>
+      <update_rate>10.0</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>920</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.141592653589793</min_angle>
+            <max_angle>3.141592653589793</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.04</min>
+          <max>40.0</max>
+          <resolution>0.03</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.001</stddev>
+        </noise>
+      </ray>
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+    </sensor>
+  </gazebo>
+  
+  
+  <!-- CAMERA -->
+  <joint name="camera_mount_to_camera_bottom_screw_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    <parent link="camera_mount_link"/>
+    <child link="camera_bottom_screw_frame"/>
+  </joint>
+  <link name="camera_bottom_screw_frame"/>
+  <joint name="camera_bottom_screw_to_camera_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="0.010600000000000002 0.0175 0.0125"/>
+    <parent link="camera_bottom_screw_frame"/>
+    <child link="camera_link"/>
+  </joint>
+  <link name="camera_link">
+    <visual>
+      <geometry>
+        <box size="0.02505 0.09 0.025"/>
+      </geometry>
+      <material name="green"/>
+      <origin rpy="0.0 0.0 0.0" xyz="-0.00824 -0.0175 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.02505 0.09 0.025"/>
+      </geometry>
+      <origin rpy="0.0 0.0 0.0" xyz="-0.00824 -0.0175 0.0"/>
+    </collision>
+    <inertial>
+      <mass value="0.072"/>
+      <origin xyz="0.0 0.0 0.0"/>
+      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
+    </inertial>
+  </link>
+  <gazebo reference="camera_link">
+    <sensor name="camera_intel_realsense_d435_color" type="camera">
+      <always_on>true</always_on>
+      <update_rate>30.0</update_rate>
+      <topic>camera/color/image_raw</topic>
+      <visualize>false</visualize>
+      <ignition_frame_id>camera_color_optical_frame</ignition_frame_id>
+      <horizontal_fov>1.2042771838760875</horizontal_fov>
+      <image>
+        <width>1280</width>
+        <height>720</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.02</near>
+        <far>300.0</far>
+      </clip>
+    </sensor>
+    <sensor name="camera_intel_realsense_d435_depth" type="depth_camera">
+      <always_on>true</always_on>
+      <update_rate>30.0</update_rate>
+      <topic>camera/depth/image_rect_raw</topic>
+      <visualize>false</visualize>
+      <ignition_frame_id>camera_depth_optical_frame</ignition_frame_id>
+      <camera>
+        <horizontal_fov>1.5184364492350666</horizontal_fov>
+        <image>
+          <width>1280</width>
+          <height>720</height>
+          <format>R_FLOAT32</format>
+        </image>
+        <clip>
+          <near>0.28</near>
+          <far>8.0</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.005</stddev>
+        </noise>
+      </camera>
+    </sensor>
+  </gazebo>
+  
+  <!-- CAMERA MOUNT -->
+  <joint name="cover_to_camera_mount_bot_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="-0.1 0.0 0.0"/>
+    <parent link="cover_link"/>
+    <child link="camera_mount_bot_link"/>
+  </joint>
+  <link name="camera_mount_bot_link">
+    <visual>
+      <geometry>
+        <box size="0.0275 0.0275 0.023"/>
+      </geometry>
+      <material name="blue"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0115"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.0275 0.0275 0.023"/>
+      </geometry>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0115"/>
+    </collision>
+  </link>
+  <joint name="camera_mount_bot_to_camera_mount_mid_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.016"/>
+    <parent link="camera_mount_bot_link"/>
+    <child link="camera_mount_mid_link"/>
+  </joint>
+  <link name="camera_mount_mid_link">
+    <visual>
+      <geometry>
+        <box size="0.015 0.017 0.101"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0425"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.015 0.017 0.101"/>
+      </geometry>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0425"/>
+    </collision>
+  </link>
+  <joint name="camera_mount_mid_to_camera_mount_top_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.086"/>
+    <parent link="camera_mount_mid_link"/>
+    <child link="camera_mount_top_link"/>
+  </joint>
+  <link name="camera_mount_top_link">
+    <visual>
+      <geometry>
+        <box size="0.023 0.023 0.025"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.00232 0.0065"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.023 0.023 0.025"/>
+      </geometry>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.00232 0.0065"/>
+    </collision>
+  </link>
+  <joint name="camera_mount_top_to_camera_mount_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.00232 0.019"/>
+    <parent link="camera_mount_top_link"/>
+    <child link="camera_mount_link"/>
+  </joint>
+  <link name="camera_mount_link"/>
+</robot>
